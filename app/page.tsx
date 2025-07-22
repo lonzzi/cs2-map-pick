@@ -1,82 +1,71 @@
+import { MAP_IMAGE_BASE, MAP_IMAGE_MAP, MAP_POOL } from '@/lib/maps';
 import Image from 'next/image';
+import Link from 'next/link';
+import { siGithub } from 'simple-icons';
 
 export default function Home() {
   return (
-    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-sans sm:p-20">
-      <main className="row-start-2 flex flex-col items-center gap-[32px] sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-center font-mono text-sm/6 sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{' '}
-            <code className="rounded bg-black/[.05] px-1 py-0.5 font-mono font-semibold dark:bg-white/[.06]">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex flex-col items-center gap-4 sm:flex-row">
-          <a
-            className="bg-foreground text-background flex h-10 items-center justify-center gap-2 rounded-full border border-solid border-transparent px-4 text-sm font-medium transition-colors hover:bg-[#383838] sm:h-12 sm:w-auto sm:px-5 sm:text-base dark:hover:bg-[#ccc]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="flex min-h-screen flex-col items-center justify-center gap-10 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-6">
+      <div className="fixed top-6 right-6 z-10">
+        <a
+          href="https://github.com/lonzzi/cs2-map-pick"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center rounded-full bg-white/10 p-2 shadow transition-colors hover:bg-white/20"
+          aria-label="GitHub Repository"
+        >
+          <svg
+            width={24}
+            height={24}
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="flex h-10 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm font-medium transition-colors hover:border-transparent hover:bg-[#f2f2f2] sm:h-12 sm:w-auto sm:px-5 sm:text-base md:w-[158px] dark:border-white/[.145] dark:hover:bg-[#1a1a1a]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <path d={siGithub.path} fill="white" />
+          </svg>
+        </a>
+      </div>
+      <div className="flex flex-col items-center gap-4">
+        <h1 className="text-3xl font-bold tracking-tight text-white drop-shadow-lg sm:text-4xl">
+          CS2 地图 Ban/Pick 工具
+        </h1>
+        <p className="mt-2 max-w-xl text-center text-lg text-gray-200">
+          支持 BO3/BO5，队伍专属安全链接，实时同步，适合赛事/训练/娱乐选图流程。
+        </p>
+        <Link href="/banpick/create">
+          <button className="mt-4 rounded bg-yellow-400 px-6 py-2 text-lg font-semibold text-black shadow-xl transition hover:bg-yellow-300">
+            创建房间
+          </button>
+        </Link>
+      </div>
+      <div className="mt-8 w-full max-w-3xl">
+        <h2 className="mb-4 text-xl font-bold text-white">当前地图池</h2>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-7">
+          {MAP_POOL.map((map) => (
+            <div
+              key={map}
+              className="flex flex-col items-center rounded-lg bg-white/10 p-2 shadow-md"
+            >
+              <Image
+                src={MAP_IMAGE_BASE + (MAP_IMAGE_MAP[map] || 'de_dust2.png')}
+                alt={map}
+                width={100}
+                height={60}
+                className="mb-1 rounded border border-gray-700 object-cover"
+                style={{ height: 'auto' }}
+                priority
+              />
+              <span className="text-sm font-semibold tracking-wide text-white drop-shadow">
+                {map}
+              </span>
+            </div>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex flex-wrap items-center justify-center gap-[24px]">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="/file.svg" alt="File icon" width={16} height={16} />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="/window.svg" alt="Window icon" width={16} height={16} />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="/globe.svg" alt="Globe icon" width={16} height={16} />
-          Go to nextjs.org →
-        </a>
+      </div>
+      <footer className="mt-10 text-center text-xs text-gray-400 opacity-80">
+        Powered by Next.js 15, Supabase, Shadcn UI
+        <br />
+        &copy; {new Date().getFullYear()} CS2 BanPick Tool
       </footer>
     </div>
   );
