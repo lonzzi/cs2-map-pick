@@ -2,10 +2,10 @@
 
 import { Card } from '@/components/ui/card';
 import { Loading } from '@/components/ui/loading';
+import { MapImage } from '@/components/ui/map-image';
 import { MAP_IMAGE_BASE, MAP_IMAGE_MAP } from '@/lib/maps';
 import { supabase } from '@/lib/supabase/client';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -78,9 +78,40 @@ export default function BanpickRoomPage() {
 
   const { team_a, team_b, mode, map_pool, steps, progress } = room;
 
+  // 当前 step 的地图名
+  const currentStep = steps[progress.currentStep];
+  let currentMap: string | null = null;
+  if (currentStep) {
+    // 还未 ban/pick 的地图
+    const picked = [...progress.picks.A, ...progress.picks.B];
+    const banned = [...progress.bans.A, ...progress.bans.B];
+    currentMap =
+      map_pool.find((m) => !picked.includes(m) && !banned.includes(m) && m !== progress.decider) ||
+      null;
+  } else if (progress.decider) {
+    currentMap = progress.decider;
+  }
+  const currentMapImg = currentMap ? MAP_IMAGE_MAP[currentMap] || 'de_dust2.png' : null;
+
   return (
-    <div className="flex min-h-screen flex-col items-center gap-8 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-4">
-      <Card className="flex w-full max-w-2xl flex-col gap-6 bg-white/80 p-8 shadow-2xl dark:bg-black/60">
+    <div className="relative flex min-h-screen flex-col items-center gap-8 p-4">
+      {/* 背景大图+遮罩 */}
+      {currentMapImg && (
+        <>
+          <div className="pointer-events-none fixed inset-0 z-0">
+            <MapImage
+              src={currentMapImg ? MAP_IMAGE_BASE + currentMapImg : ''}
+              alt={currentMap || ''}
+              blur
+              className="h-full w-full"
+              style={{ width: '100vw', height: '100vh' }}
+              priority
+            />
+            <div className="absolute inset-0 bg-black/60" />
+          </div>
+        </>
+      )}
+      <Card className="relative z-10 flex w-full max-w-2xl flex-col gap-6 bg-white/80 p-8 shadow-2xl dark:bg-black/60">
         <div className="flex items-center justify-between">
           <span className="text-lg font-bold">{team_a}</span>
           <span className="bg-muted rounded px-2 py-1 font-mono text-sm">{mode.toUpperCase()}</span>
@@ -126,16 +157,11 @@ export default function BanpickRoomPage() {
                 )}
                 style={{ background: '#222' }}
               >
-                <Image
+                <MapImage
                   src={MAP_IMAGE_BASE + img}
                   alt={map}
-                  width={220}
-                  height={120}
-                  className="h-[120px] w-full object-cover transition-all duration-700"
-                  style={{
-                    height: 'auto',
-                    filter: status === 'ban' ? 'grayscale(1) blur(1px)' : undefined,
-                  }}
+                  className="h-[120px] w-full"
+                  grayscale={status === 'ban'}
                   priority
                 />
                 <div className="absolute right-0 bottom-0 left-0 bg-black/60 py-1 text-center text-sm font-bold text-white">
