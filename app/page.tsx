@@ -3,6 +3,10 @@ import { MAP_IMAGE_BASE, MAP_IMAGE_MAP, MAP_POOL } from '@/lib/maps';
 import Link from 'next/link';
 import { siGithub } from 'simple-icons';
 
+export const metadata = {
+  title: 'CS2 地图 Ban/Pick 工具',
+};
+
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-10 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-6">
