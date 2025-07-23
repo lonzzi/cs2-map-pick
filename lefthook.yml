@@ -46,8 +46,13 @@ pre-commit:
   commands:
     prettier:
       run: pnpm format
+      stage_fixed: true
     lint:
-      run: pnpm lint
+      run: pnpm lint:fix
+      stage_fixed: true
 
 commit-msg:
-  run: npx commitlint --edit $1
+  piped: true
+  commands:
+    lint-commit-msg:
+      run: pnpm commitlint --edit $1
