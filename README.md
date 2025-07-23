@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CS2 Map Pick
+
+A modern web application for Counter-Strike 2 teams to perform map ban/pick (banpick) processes interactively and visually.
+
+## Features
+
+- Real-time map ban/pick flow for BO3/BO5
+- Team authentication via unique links
+- Live updates with Supabase Realtime
+- Responsive UI with Tailwind CSS and Shadcn UI
+- Map pool and decider logic
+- Visual feedback and status for each map
+
+## Tech Stack
+
+- **Next.js 15 (App Router)**
+- **React 19**
+- **TypeScript**
+- **Tailwind CSS**
+- **Shadcn UI & Radix UI**
+- **Supabase** (Database & Realtime)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js (v18+ recommended)
+- pnpm (or npm/yarn)
+- Supabase project (see below)
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Create a `.env.local` file in the root directory.
+2. Add your Supabase credentials:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Database Setup
 
-## Learn More
+- Create a `rooms` table in Supabase with the following structure (example):
+  - `code` (text, primary key)
+  - `team_a` (text)
+  - `team_b` (text)
+  - `team_a_code` (text)
+  - `team_b_code` (text)
+  - `mode` (text)
+  - `map_pool` (text[])
+  - `steps` (json)
+  - `progress` (json)
 
-To learn more about Next.js, take a look at the following resources:
+### Running Locally
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+cs2-map-pick/
+├── app/                # Next.js app directory (routing, pages)
+│   └── banpick/        # Banpick flows and team pages
+├── components/         # UI components (Shadcn, custom)
+├── hooks/              # Custom React hooks
+├── lib/                # Utilities, Supabase client, map data
+├── public/             # Static assets (map images, icons)
+├── styles/             # Global styles (Tailwind)
+├── README.md           # Project documentation
+└── ...
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feat/your-feature`)
+3. Commit your changes (`pnpm commit`)
+4. Push to the branch (`git push origin feat/your-feature`)
+5. Open a Pull Request
+
+## License
+
+[MIT](LICENSE)
