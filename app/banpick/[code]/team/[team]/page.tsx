@@ -36,9 +36,9 @@ export default function TeamBanpickPage() {
   const teamCode = params?.team as string;
   const [room, setRoom] = useState<Room | null>(null);
   const [team, setTeam] = useState<TeamKey | null>(null);
-  const [submitting, setSubmitting] = useState(false);
   const [lastDecider, setLastDecider] = useState<string | null>(null);
   const [authError, setAuthError] = useState(false);
+  const [submittingMap, setSubmittingMap] = useState<string | null>(null);
 
   useEffect(() => {
     if (!code || !teamCode) return;
@@ -112,8 +112,8 @@ export default function TeamBanpickPage() {
   );
 
   async function handleAction(map: string) {
-    if (!isMyTurn || submitting) return;
-    setSubmitting(true);
+    if (!isMyTurn || submittingMap) return;
+    setSubmittingMap(map);
     const newProgress = JSON.parse(JSON.stringify(progress));
     if (currentStep.action === 'ban') {
       newProgress.bans[team].push(map);
@@ -130,7 +130,7 @@ export default function TeamBanpickPage() {
       .from('rooms')
       .update({ progress: newProgress })
       .eq('code', code);
-    setSubmitting(false);
+    setSubmittingMap(null);
     if (error) {
       toast.error('操作失败: ' + error.message);
     } else {
@@ -189,7 +189,8 @@ export default function TeamBanpickPage() {
               status = 'decider';
             }
             const img = MAP_IMAGE_MAP[map] || 'de_dust2.png';
-            const canAction = isMyTurn && !status && !submitting && remaining.includes(map);
+            const canAction = isMyTurn && !status && !submittingMap && remaining.includes(map);
+            const isLoading = submittingMap === map;
             return (
               <div
                 key={map}
@@ -206,6 +207,8 @@ export default function TeamBanpickPage() {
                       : status === 'decider'
                         ? 'scale-110 ring-4 ring-black'
                         : 'ring-2 ring-gray-300 hover:scale-105 hover:ring-yellow-400',
+                  isLoading && 'animate-fadeIn animate-pulse',
+                  'cursor-pointer',
                 )}
                 style={{ background: '#222' }}
                 onClick={() => canAction && handleAction(map)}
@@ -213,10 +216,15 @@ export default function TeamBanpickPage() {
                 <MapImage
                   src={MAP_IMAGE_BASE + img}
                   alt={map}
-                  className="h-[120px] w-full cursor-pointer"
+                  className="h-[120px] w-full"
                   grayscale={status === 'ban'}
                   priority
                 />
+                {isLoading && (
+                  <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                    <Loading size={32} />
+                  </div>
+                )}
                 <div className="absolute right-0 bottom-0 left-0 bg-black/60 py-1 text-center text-sm font-bold text-white">
                   {map}
                   {status === 'ban' && (by === 'A' ? ' (A Ban)' : ' (B Ban)')}
@@ -226,8 +234,8 @@ export default function TeamBanpickPage() {
                 {canAction && (
                   <Button
                     size="sm"
-                    className="absolute top-2 right-2 z-10 bg-yellow-500 text-black hover:bg-yellow-600"
-                    disabled={submitting}
+                    className="absolute top-2 right-2 z-10 bg-yellow-500 text-black hover:bg-yellow-500"
+                    disabled={submittingMap === map}
                   >
                     {currentStep.action === 'ban' ? 'Ban' : 'Pick'}
                   </Button>
