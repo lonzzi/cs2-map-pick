@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Loading } from '@/components/ui/loading';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { MAP_POOL } from '@/lib/maps';
 import { supabase } from '@/lib/supabase/client';
@@ -108,7 +109,14 @@ export default function CreateBanpickRoom() {
           disabled={loading || !teamA || !teamB}
           className={cn('w-full', loading && 'opacity-60')}
         >
-          {loading ? '创建中...' : '创建房间'}
+          {loading ? (
+            <span className="flex items-center justify-center gap-2">
+              <Loading text="" size={20} />
+              创建中...
+            </span>
+          ) : (
+            '创建房间'
+          )}
         </Button>
         {links && (
           <div className="mt-4 flex flex-col gap-2 text-sm">
