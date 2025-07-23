@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Loading } from '@/components/ui/loading';
 import { MAP_IMAGE_BASE, MAP_IMAGE_MAP } from '@/lib/maps';
 import { supabase } from '@/lib/supabase/client';
 import { cn } from '@/lib/utils';
@@ -82,7 +83,11 @@ export default function TeamBanpickPage() {
     );
   }
   if (!room || !team) {
-    return <div className="flex min-h-screen items-center justify-center">加载中...</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loading />
+      </div>
+    );
   }
 
   const { team_a, team_b, map_pool, steps, progress } = room;
