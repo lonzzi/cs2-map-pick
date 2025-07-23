@@ -46,15 +46,16 @@ pnpm install
 ### Database Setup
 
 - Create a `rooms` table in Supabase with the following structure (example):
-  - `code` (text, primary key)
+  - `id` (uuid, primary key)
+  - `code` (text)
   - `team_a` (text)
   - `team_b` (text)
   - `team_a_code` (text)
   - `team_b_code` (text)
   - `mode` (text)
   - `map_pool` (text[])
-  - `steps` (json)
-  - `progress` (json)
+  - `steps` (jsonb)
+  - `progress` (jsonb)
 
 ### Running Locally
 
