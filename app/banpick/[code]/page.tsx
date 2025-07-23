@@ -180,19 +180,67 @@ export default function BanpickRoomPage() {
             const team = step.team === 'A' ? team_a : team_b;
             const done = idx < progress.currentStep;
             const current = idx === progress.currentStep;
+            // 计算每一步对应的地图
+            let mapName: string | null = null;
+            let mapImg: string | null = null;
+            if (done) {
+              // 已完成的 step，从 bans/picks 里取地图
+              if (step.action === 'ban') {
+                const banAIdx =
+                  steps
+                    .slice(0, idx + 1)
+                    .filter((s, i) => s.action === 'ban' && s.team === 'A' && i <= idx).length - 1;
+                const banBIdx =
+                  steps
+                    .slice(0, idx + 1)
+                    .filter((s, i) => s.action === 'ban' && s.team === 'B' && i <= idx).length - 1;
+                mapName = step.team === 'A' ? progress.bans.A[banAIdx] : progress.bans.B[banBIdx];
+              } else if (step.action === 'pick') {
+                const pickAIdx =
+                  steps
+                    .slice(0, idx + 1)
+                    .filter((s, i) => s.action === 'pick' && s.team === 'A' && i <= idx).length - 1;
+                const pickBIdx =
+                  steps
+                    .slice(0, idx + 1)
+                    .filter((s, i) => s.action === 'pick' && s.team === 'B' && i <= idx).length - 1;
+                mapName =
+                  step.team === 'A' ? progress.picks.A[pickAIdx] : progress.picks.B[pickBIdx];
+              }
+              mapImg = mapName ? MAP_IMAGE_MAP[mapName] || 'de_dust2.png' : null;
+            }
             return (
               <div key={idx} className={cn('flex items-center gap-2', current && 'font-bold')}>
                 <span>{team}</span>
                 <span>{desc}</span>
+                {/* 只在已完成 step 显示地图名和小图标 */}
+                {done && mapName && mapImg && (
+                  <span className="flex items-center gap-1">
+                    <MapImage
+                      src={MAP_IMAGE_BASE + mapImg}
+                      alt={mapName}
+                      className="h-5 w-8 rounded-sm"
+                    />
+                    <span className="font-mono text-xs">{mapName}</span>
+                  </span>
+                )}
+                {/* 当前 step 只显示提示 */}
+                {current && <span className="text-xs text-yellow-600">进行中（待选地图）</span>}
                 {done && <span className="text-xs text-green-600">✔</span>}
-                {current && <span className="text-xs text-yellow-600">进行中</span>}
               </div>
             );
           })}
           {progress.decider && (
             <div className="flex items-center gap-2 font-bold">
               <span>决胜图</span>
-              <span>{progress.decider}</span>
+              <span className="flex items-center gap-1">
+                <MapImage
+                  src={MAP_IMAGE_BASE + (MAP_IMAGE_MAP[progress.decider] || 'de_dust2.png')}
+                  alt={progress.decider}
+                  className="h-5 w-8 rounded-sm"
+                />
+                <span className="font-mono text-xs">{progress.decider}</span>
+              </span>
             </div>
           )}
         </div>

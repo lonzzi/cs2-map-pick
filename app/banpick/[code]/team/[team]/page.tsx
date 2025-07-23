@@ -158,11 +158,15 @@ export default function TeamBanpickPage() {
       )}
       <Card className="relative z-10 flex w-full max-w-2xl flex-col gap-6 bg-white/80 p-8 shadow-2xl dark:bg-black/60">
         <div className="flex items-center justify-between">
-          <span className="text-lg font-bold">{team_a}</span>
-          <span className="bg-muted rounded px-2 py-1 font-mono text-sm">
-            {team === 'A' ? '你的队伍' : '对手队伍'}
-          </span>
-          <span className="text-lg font-bold">{team_b}</span>
+          <div className="flex flex-col items-start">
+            <span className="text-xs text-gray-500 dark:text-gray-400">你的队伍</span>
+            <span className="text-lg font-bold">{team === 'A' ? team_a : team_b}</span>
+          </div>
+          <span className="bg-muted rounded px-2 py-1 font-mono text-sm">VS</span>
+          <div className="flex flex-col items-end">
+            <span className="text-xs text-gray-500 dark:text-gray-400">对手队伍</span>
+            <span className="text-lg font-bold">{team === 'A' ? team_b : team_a}</span>
+          </div>
         </div>
         <div className="mb-2 text-center text-lg font-semibold">
           {isMyTurn
