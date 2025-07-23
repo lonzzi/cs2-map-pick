@@ -26,8 +26,8 @@ function getSteps(mode: 'bo3' | 'bo5') {
       { action: 'ban', team: 'B' },
       { action: 'pick', team: 'A' },
       { action: 'pick', team: 'B' },
-      { action: 'ban', team: 'B' },
       { action: 'ban', team: 'A' },
+      { action: 'ban', team: 'B' },
     ];
   }
   return [
