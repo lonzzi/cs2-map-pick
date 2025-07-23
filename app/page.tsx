@@ -1,5 +1,5 @@
+import { MapImage } from '@/components/ui/map-image';
 import { MAP_IMAGE_BASE, MAP_IMAGE_MAP, MAP_POOL } from '@/lib/maps';
-import Image from 'next/image';
 import Link from 'next/link';
 import { siGithub } from 'simple-icons';
 
@@ -33,7 +33,7 @@ export default function Home() {
           支持 BO3/BO5，队伍专属安全链接，实时同步，适合赛事/训练/娱乐选图流程。
         </p>
         <Link href="/banpick/create">
-          <button className="mt-4 rounded bg-yellow-400 px-6 py-2 text-lg font-semibold text-black shadow-xl transition hover:bg-yellow-300">
+          <button className="mt-4 cursor-pointer rounded bg-yellow-400 px-6 py-2 text-lg font-semibold text-black shadow-xl transition hover:bg-yellow-300">
             创建房间
           </button>
         </Link>
@@ -46,13 +46,12 @@ export default function Home() {
               key={map}
               className="flex flex-col items-center rounded-lg bg-white/10 p-2 shadow-md"
             >
-              <Image
+              <MapImage
                 src={MAP_IMAGE_BASE + (MAP_IMAGE_MAP[map] || 'de_dust2.png')}
                 alt={map}
                 width={100}
                 height={60}
-                className="mb-1 rounded border border-gray-700 object-cover"
-                style={{ height: 'auto' }}
+                className="mb-1 rounded border border-gray-700"
                 priority
               />
               <span className="text-sm font-semibold tracking-wide text-white drop-shadow">

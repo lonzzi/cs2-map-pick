@@ -3,10 +3,10 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Loading } from '@/components/ui/loading';
+import { MapImage } from '@/components/ui/map-image';
 import { MAP_IMAGE_BASE, MAP_IMAGE_MAP } from '@/lib/maps';
 import { supabase } from '@/lib/supabase/client';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -182,16 +182,11 @@ export default function TeamBanpickPage() {
                 style={{ background: '#222' }}
                 onClick={() => canAction && handleAction(map)}
               >
-                <Image
+                <MapImage
                   src={MAP_IMAGE_BASE + img}
                   alt={map}
-                  width={220}
-                  height={120}
-                  className="h-[120px] w-full object-cover transition-all duration-700"
-                  style={{
-                    height: 'auto',
-                    filter: status === 'ban' ? 'grayscale(1) blur(1px)' : undefined,
-                  }}
+                  className="h-[120px] w-full"
+                  grayscale={status === 'ban'}
                   priority
                 />
                 <div className="absolute right-0 bottom-0 left-0 bg-black/60 py-1 text-center text-sm font-bold text-white">
