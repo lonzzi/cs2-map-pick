@@ -2,6 +2,7 @@
 
 import { MapImage } from '@/components/ui/map-image';
 import { MAP_IMAGE_BASE, MAP_IMAGE_MAP, MAP_POOL } from '@/lib/maps';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import React from 'react';
 import { siGithub } from 'simple-icons';
@@ -9,6 +10,7 @@ import { siGithub } from 'simple-icons';
 export default function Home() {
   const [players, setPlayers] = React.useState('');
   const [teams, setTeams] = React.useState<{ A: string[]; B: string[] } | null>(null);
+  const [randomMap, setRandomMap] = React.useState<string | null>(null);
 
   function handleRandomizeTeams() {
     const names = players
@@ -22,6 +24,11 @@ export default function Home() {
     const shuffled = [...names].sort(() => Math.random() - 0.5);
     const mid = Math.ceil(shuffled.length / 2);
     setTeams({ A: shuffled.slice(0, mid), B: shuffled.slice(mid) });
+  }
+
+  function handleRandomMap() {
+    const idx = Math.floor(Math.random() * MAP_POOL.length);
+    setRandomMap(MAP_POOL[idx]);
   }
 
   return (
@@ -90,7 +97,10 @@ export default function Home() {
           onChange={(e) => setPlayers(e.target.value)}
         />
         <button
-          className="mt-2 rounded bg-yellow-400 px-4 py-2 font-semibold text-black shadow hover:bg-yellow-300 disabled:opacity-60"
+          className={cn(
+            'mt-2 cursor-pointer rounded bg-yellow-400 px-4 py-2 font-semibold text-black shadow hover:bg-yellow-300 disabled:opacity-60',
+            players.trim().length === 0 && 'cursor-not-allowed opacity-60',
+          )}
           onClick={handleRandomizeTeams}
           disabled={players.trim().length === 0}
         >
@@ -114,6 +124,27 @@ export default function Home() {
                 ))}
               </ul>
             </div>
+          </div>
+        )}
+      </div>
+      <div className="mt-6 flex w-full flex-col items-center gap-2">
+        <button
+          className="cursor-pointer rounded bg-yellow-400 px-4 py-2 font-semibold text-black shadow hover:bg-yellow-300"
+          onClick={handleRandomMap}
+        >
+          随机地图
+        </button>
+        {randomMap && (
+          <div className="mt-2 flex flex-col items-center gap-2">
+            <span className="text-lg font-bold text-white">{randomMap}</span>
+            <MapImage
+              src={MAP_IMAGE_BASE + (MAP_IMAGE_MAP[randomMap] || 'de_dust2.png')}
+              alt={randomMap}
+              width={120}
+              height={72}
+              className="rounded border border-gray-700"
+              priority
+            />
           </div>
         )}
       </div>
