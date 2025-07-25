@@ -1,12 +1,12 @@
-export const MAP_POOL = ['Mirage', 'Inferno', 'Nuke', 'Ancient', 'Anubis', 'Vertigo', 'Overpass'];
+export const MAP_POOL = ['Mirage', 'Inferno', 'Nuke', 'Ancient', 'Train', 'Dust2', 'Overpass'];
 
 export const MAP_IMAGE_MAP: Record<string, string> = {
   Mirage: 'de_mirage.png',
   Inferno: 'de_inferno.png',
   Nuke: 'de_nuke.png',
   Ancient: 'de_ancient.png',
-  Anubis: 'de_anubis.png',
-  Vertigo: 'de_vertigo.png',
+  Train: 'de_train.png',
+  Dust2: 'de_dust2.png',
   Overpass: 'de_overpass.png',
 };
 
